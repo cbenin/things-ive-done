@@ -23,7 +23,7 @@ for k=5:14
     activity_mod_shunt(3,k-4)=(B * -Csum_N(k)) / (A+ Csum_N(k) + Esum_N(k));
     activity_mod_shunt(4,k-4)=(B * -Csum_P(k)) / (A+ Csum_P(k) + Esum_P(k));
 
-  %%   
+ % %%   
    
 %do eulers for and make array that is time steps*10
 %should have 4 100,10 arrays
