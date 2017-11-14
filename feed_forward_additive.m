@@ -13,6 +13,7 @@ activity=zeros(length(I),time_steps);
 clf
 figure(1)
 for k=1:length(I)
+ plot(asymptotes)
     for i=1:time_steps-1
          activity(k,i+1)= (dt*   ((-A*activity(k,i))+  ((B) *I(k))-(sum(I)-I(k)))         ) + activity(k,i) ; 
       %activity(k, i+1) = activity(k,i) + (dt*(((-A*activity(k,i))+ (B *I(k)))-(sum(I)-I(k)))) ; 
@@ -26,6 +27,11 @@ end
  normalized_asymptotes=asymptotes/5.5;
  plot(normalized_asymptotes) 
  hold on
- plot(asymptotes)
-
+ figure()
+ mesh(activity)
+ xlabel('time (miliseconds)')
+ ylabel('Cell')
+ yticks ([1 2 3 4 5 6 7 8 9 10])
+ zlabel('Activity')
+ title('Equilibrium Activity over time')
 end
