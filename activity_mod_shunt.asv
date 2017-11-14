@@ -1,4 +1,4 @@
-function [activity_mod_shunt,w,x,y,z] = activity_mod_shunt(A,B,dt)
+function [activity_mod_shunt] = activity_mod_shunt(A,B)
 L= [0.1, 0.1, 0.1, 0.1, 0.1, 0.8, 0.8, 0.8, 0.8, 0.8];
 L= [L(1:4) L L(end-3:end)];
 M=[0.1, 0.1, 0.1, 0.1, 0.8, 0.8, 0.1, 0.1, 0.1, 0.1];
@@ -37,13 +37,12 @@ y=zeros(10,time_steps);
 y(1)=0;
 z=zeros(10,time_steps);
 z(1)=0;
-for k=1:10
+for k=1:length(I)
     for i=1:time_steps-1
-    w(k,i+1)=(dt*(-A*w(k,i)+(((B-w(k,i)) * Csum_L(k)))-(w(k,i) *Esum_L )))+ w(k,i) ; 
-    x(k,i+1)=(dt*(-A*x(k,i)+(((B-x(k,i)) * Csum_L(k)))-(x(k,i) *Esum_L )))+ x(k,i) ; 
-    y(k,i+1)=(dt*(-A*y(k,i)+(((B-y(k,i)) * Csum_L(k)))-(y(k,i) *Esum_L )))+ y(k,i) ; 
-    z(k,i+1)=(dt*(-A*z(k,i)+(((B-z(k,i)) * Csum_L(k)))-(z(k,i) *Esum_L )))+ z(k,i) ; 
-
+    w(k,i+1)= dt* 
+    (-A*w(k,i) +   (((B-activity(k,i)) *  C_sum_L(k) ))  - (activity(k,i) *E_SumL ))      ) 
+    + w(k,i) ; 
+ 
 
     end %use Eueler's method to numerically integrate the function
     
