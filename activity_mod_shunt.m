@@ -1,4 +1,4 @@
-function [activity_mod_shunt,w,x,y,z] = activity_mod_shunt(A,B,dt)
+function [activity_mod_shunt,w,x,y,z,Csum_L,Csum_M,Csum_N,Csum_P,Esum_L,Esum_M,Esum_N,Esum_P] = activity_mod_shunt(A,B,dt)
 L= [0.1, 0.1, 0.1, 0.1, 0.1, 0.8, 0.8, 0.8, 0.8, 0.8];
 L= [L(1:4) L L(end-3:end)];
 M=[0.1, 0.1, 0.1, 0.1, 0.8, 0.8, 0.1, 0.1, 0.1, 0.1];
@@ -24,30 +24,54 @@ for k=5:14
     activity_mod_shunt(4,k-4)=(B * -Csum_P(k)) / (A+ Csum_P(k) + Esum_P(k));
 
  % %%   
-   
+end
 %do eulers for and make array that is time steps*10
 %should have 4 100,10 arrays
 time_steps=10/dt;
 
 w=zeros(10,time_steps);
-w(1)=0;
 x=zeros(10,time_steps);
-x(1)=0;
 y=zeros(10,time_steps);
-y(1)=0;
 z=zeros(10,time_steps);
-z(1)=0;
-for k=1:10
-    for i=1:time_steps-1
-    w(k,i+1)=(dt*(-A*w(k,i)+(((B-w(k,i)) * Csum_L(k)))-(w(k,i) *Esum_L )))+ w(k,i) ; 
-    x(k,i+1)=(dt*(-A*x(k,i)+(((B-x(k,i)) * Csum_L(k)))-(x(k,i) *Esum_L )))+ x(k,i) ; 
-    y(k,i+1)=(dt*(-A*y(k,i)+(((B-y(k,i)) * Csum_L(k)))-(y(k,i) *Esum_L )))+ y(k,i) ; 
-    z(k,i+1)=(dt*(-A*z(k,i)+(((B-z(k,i)) * Csum_L(k)))-(z(k,i) *Esum_L )))+ z(k,i) ; 
+  for i=1:time_steps-1
+        for l=5:14
+    w(l-4,i+1)=(dt*((-A*w(l-4,i))+(((B-w(l-4,i)) * Csum_L(l)))-(w(l-4,i) *Esum_L(l) )))+ w(l-4,i) ; 
+    x(l-4,i+1)=(dt*((-A*x(l-4,i))+(((B-x(l-4,i)) * Csum_M(l)))-(x(l-4,i) *Esum_M(l) )))+ x(l-4,i) ; 
+    y(l-4,i+1)=(dt*((-A*y(l-4,i))+(((B-y(l-4,i)) * Csum_N(l)))-(y(l-4,i) *Esum_N(l) )))+ y(l-4,i) ; 
+    z(l-4,i+1)=(dt*((-A*z(l-4,i))+(((B-z(l-4,i)) * Csum_P(l)))-(z(l-4,i) *Esum_P(l) )))+ z(l-4,i) ; 
 
 
-    end %use Eueler's method to numerically integrate the function
+        end %use Eueler's method to numerically integrate the function
     
-end
+  end
+figure()
+mesh(w)
+xlabel('time (miliseconds)')
+ylabel('Cell')
+yticks ([1 2 3 4 5 6 7 8 9 10])
+zlabel('Activity')
+title('Equilibrium Activity over time for Input A')
+figure()
+mesh(x)
+xlabel('time (miliseconds)')
+ylabel('Cell')
+yticks ([1 2 3 4 5 6 7 8 9 10])
+zlabel('Activity')
+title('Equilibrium Activity over Time for Input B')
+figure()
+mesh(y)
+xlabel('time (miliseconds)')
+ylabel('Cell')
+yticks ([1 2 3 4 5 6 7 8 9 10])
+zlabel('Activity')
+title('Equilibrium Activity over Time for Input C')
+figure()
+mesh(x)
+xlabel('time (miliseconds)')
+ylabel('Cell')
+yticks ([1 2 3 4 5 6 7 8 9 10])
+zlabel('Activity')
+title('Equilibrium Activity over Time for Input D')
   end
 
   
