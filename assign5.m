@@ -10,32 +10,57 @@ activity1=zeros(length(I),time_steps);
 activity2=zeros(length(I),time_steps);
 activity3=zeros(length(I),time_steps);
 activity4=zeros(length(I),time_steps);
-clf
+poopy=zeros(length(I),time_steps);
+doopy=zeros(length(I),time_steps);
+loopy=zeros(length(I),time_steps);
+
+
+
 
 for k=1:length(I)
-    for i=1:time_steps-1
-        
-    
-
-      f{2}=activity2(k,i+1)^2;
-      f{3}=activity3(k,i+1)/(F+activity3(k,i+1));
-      f{4}=(activity4(k,i+1)^2)/(F+ (activity4(k,i+1)^2));
-      activity1(k, i+1) = activity1(k,i) + (dt*((-A*activity1(k,i))+  (((B-activity1(k,i)) * (activity1(k,i))+I(k)) )  -  (activity1(k,i)* ( (sum(activity1(k, :)))-activity1(k,i)))))
-      activity2(k, i+1) = activity2(k,i) + (dt*((-A*activity2(k,i))+  (((B-activity2(k,i)) * (activity2(k,i))+I(k)) )  -  (activity2(k,i)* ( (sum(activity2(k, :)))-activity2(k,i))))) ; 
-      activity3(k, i+1) = activity3(k,i) + (dt*((-A*activity3(k,i))+  (((B-activity3(k,i)) * (activity3(k,i))+I(k)) )  -  (activity3(k,i)* ( (sum(activity3(k, :)))-activity3(k,i))))) ; 
-      activity4(k, i+1) = activity4(k,i) + (dt*((-A*activity4(k,i))+  (((B-activity4(k,i)) * (activity4(k,i))+I(k)) )  -  (activity4(k,i)* ( (sum(activity4(k, :)))-activity4(k,i))))) ; 
+    for i=1:1000     
+        poopy(k,i)= activity2(k,i) .^2;
+        doopy(k,i)= activity3(k,i) / (F+ activity3(k,i));
+        loopy(k,i)= activity4(k,i) .^2 /(F + (activity4(k,i).^2 ));
+        activity1(k, i+1) = activity1(k,i) + (dt*((-A*activity1(k,i))+  (((B-activity1(k,i)) * (activity1(k,i))+I(k)) )  -  (activity1(k,i)* ( (sum(activity1(k, :)))-activity1(k,i)))));
+        activity2(k, i+1) = activity2(k,i) + (dt*((-A*activity2(k,i))+  (((B-activity2(k,i)) * (poopy(k,i)+I(k)) )  -  (activity2(k,i)*  (sum(poopy(k,:)))- poopy(k,i)))));
+        activity3(k, i+1) = activity3(k,i) + (dt*((-A*activity3(k,i))+  (((B-activity3(k,i)) * (doopy(k,i)+I(k)) )  -  (activity3(k,i)*  (sum(doopy(k,:)))- doopy(k,i)))));
+        activity4(k, i+1) = activity4(k,i) + (dt*((-A*activity4(k,i))+  (((B-activity4(k,i)) * (loopy(k,i)+I(k)) )  -  (activity4(k,i)*  (sum(loopy(k,:)))- loopy(k,i)))));
 
     end 
+    for i=1001:10000
+        poopy(k,i)= activity2(k,i) .^2;
+        doopy(k,i)= activity3(k,i) / (F+ activity3(k,i));
+        loopy(k,i)= activity4(k,i) .^2 /(F + (activity4(k,i).^2 ));
+        activity1(k, i+1) = activity1(k,i) + (dt*((-A*activity1(k,i))+  (((B-activity1(k,i)) * (activity1(k,i)) )  -  (activity1(k,i)* ( (sum(activity1(k, :)))-activity1(k,i))))));
+        activity2(k, i+1) = activity2(k,i) + (dt*((-A*activity2(k,i))+  (((B-activity2(k,i)) * (poopy(k,i)) )  -  (activity2(k,i)*  (sum(poopy(k,:)))- poopy(k,i)))));
+        activity3(k, i+1) = activity3(k,i) + (dt*((-A*activity3(k,i))+  (((B-activity3(k,i)) * (doopy(k,i)) )  -  (activity3(k,i)*  (sum(doopy(k,:)))- doopy(k,i)))));
+        activity4(k, i+1) = activity4(k,i) + (dt*((-A*activity4(k,i))+  (((B-activity4(k,i)) * (loopy(k,i)) )  -  (activity4(k,i)*  (sum(loopy(k,:)))- loopy(k,i)))));
 % asymptotes(k)= activity(k, end);
 % figure()
-% plot (signal1(k, :));
-% hold on    
+    end
+    
+% plot (activity1(k, :));
+% hold on
+% 
+% figure()
+% plot(activity2(k,:));
+% hold on
+% 
+% figure()
+% plot(activity3(k,:));
+% hold on
+% igure()
+% figure()
+% plot(activity4(k,:));
+% hold on
+% % hold on    
 end
 % normalized_asymptotes=asymptotes/5.5;
 % plot(normalized_asymptotes) 
 % hold on
 % plot(asymptotes)
- figure()
+ 
  mesh(activity1)
  figure()
  mesh(activity2)
